@@ -1,6 +1,12 @@
 
 # OpenWeather Refined
 
+> [!NOTE]
+> This is a community-maintained fork of the archived
+> [penguin-teal/gnome-openweather](https://github.com/penguin-teal/gnome-openweather).
+> It only carries compatibility fixes for GNOME Shell 48-51 (`vertical` -> `orientation`,
+> optional `Clutter.PanAction`). No new features are planned.
+
 > [!IMPORTANT]
 > This extension has been superseded by [SimpleWeather](https://github.com/romanlefler/SimpleWeather).
 > This other account is me and I have remade the app since it is a simple enough extension to make from
