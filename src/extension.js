@@ -1661,7 +1661,7 @@ class OpenWeatherMenuButton extends PanelMenu.Button {
     });
 
     let bb = new St.BoxLayout({
-      vertical: true,
+      orientation: Clutter.Orientation.VERTICAL,
       x_expand: true,
       y_expand: true,
       y_align: Clutter.ActorAlign.CENTER,
@@ -1700,13 +1700,13 @@ class OpenWeatherMenuButton extends PanelMenu.Button {
     });
     let rb_captions = new St.BoxLayout({
       x_expand: true,
-      vertical: true,
+      orientation: Clutter.Orientation.VERTICAL,
       style_class:
         "popup-menu-item popup-status-menu-item openweather-current-databox-captions",
     });
     let rb_values = new St.BoxLayout({
       x_expand: true,
-      vertical: true,
+      orientation: Clutter.Orientation.VERTICAL,
       style_class: "system-menu-action openweather-current-databox-values",
     });
     st13AddActors(rb, rb_captions, rb_values);
@@ -1806,7 +1806,7 @@ class OpenWeatherMenuButton extends PanelMenu.Button {
       todaysForecast.Summary.clutter_text.line_wrap = true;
 
       let fb = new St.BoxLayout({
-        vertical: true,
+        orientation: Clutter.Orientation.VERTICAL,
         x_expand: true,
         style_class: "openweather-today-databox",
       });
@@ -1863,12 +1863,12 @@ class OpenWeatherMenuButton extends PanelMenu.Button {
     st13AddActor(this._forecastExpander.menu.box, this._forecastExpanderBox);
 
     this._daysBox = new St.BoxLayout({
-      vertical: true,
+      orientation: Clutter.Orientation.VERTICAL,
       y_expand: true,
       style_class: "openweather-forecast-box",
     });
     this._forecastBox = new St.BoxLayout({
-      vertical: true,
+      orientation: Clutter.Orientation.VERTICAL,
       x_expand: true,
       style_class: "openweather-forecast-box",
     });
@@ -1876,20 +1876,23 @@ class OpenWeatherMenuButton extends PanelMenu.Button {
       x_expand: true,
       style_class: "openweather-forecasts",
     });
-    let pan = new Clutter.PanAction({
-      interpolate: true,
-    });
-    pan.connect("pan", (action) => {
-      let [dist, dx, dy] = action.get_motion_delta(0);
+    // Clutter.PanAction is gone in newer Shells; wheel scrolling still works
+    if (Clutter.PanAction) {
+      let pan = new Clutter.PanAction({
+        interpolate: true,
+      });
+      pan.connect("pan", (action) => {
+        let [dist, dx, dy] = action.get_motion_delta(0);
 
-      this.scrollForecastBy(
-        -1 *
-          ((dy + dx) / this._forecastScrollBox.width) *
-          hscroll(this._forecastScrollBox).page_size
-      );
-      return false;
-    });
-    this._forecastScrollBox.add_action(pan);
+        this.scrollForecastBy(
+          -1 *
+            ((dy + dx) / this._forecastScrollBox.width) *
+            hscroll(this._forecastScrollBox).page_size
+        );
+        return false;
+      });
+      this._forecastScrollBox.add_action(pan);
+    }
     this._forecastScrollBox.connect("scroll-event", this._onScroll.bind(this));
     this._forecastScrollBox.vscrollbar_policy = St.PolicyType.NEVER;
     this._forecastScrollBox.hscrollbar_policy = St.PolicyType.AUTOMATIC;
@@ -1936,7 +1939,7 @@ class OpenWeatherMenuButton extends PanelMenu.Button {
         forecastWeather[j].Summary.clutter_text.line_wrap = true;
 
         let by = new St.BoxLayout({
-          vertical: true,
+          orientation: Clutter.Orientation.VERTICAL,
           x_expand: true,
           style_class: "openweather-forecast-databox",
         });
